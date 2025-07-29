@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Bitcoin Energy Analyzer",
+    "description": "Bitcoin energy analysis API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "paths": {
+    "/analyze-bitcoin-energy": {
+      "post": {
+        "summary": "Analyze Bitcoin Energy",
+        "operationId": "analyzeBitcoinEnergy",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "days": {
+                    "type": "integer",
+                    "minimum": 30,
+                    "maximum": 365,
+                    "default": 180
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "correlation_coefficient": {
+                      "type": "number"
+                    },
+                    "image_base64": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 
