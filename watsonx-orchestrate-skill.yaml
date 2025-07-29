@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: Skill
+metadata:
+  name: bitcoin-energy-analyzer
+  description: "AI-powered Bitcoin price and US energy consumption correlation analyzer"
+  version: "2.0.0"
+  tags:
+    - bitcoin
+    - energy
+    - correlation
+    - analytics
+    - financial
+spec:
+  openapi_url: "https://your-app-url/openapi.json"
+  base_url: "https://your-app-url"
+  
+  # Primary skill endpoint
+  primary_action:
+    endpoint: "/analyze-bitcoin-energy"
+    method: "POST"
+    description: "Analyze Bitcoin price correlation with US energy consumption"
+    
+  # Input parameters for watsonx Orchestrate
+  parameters:
+    days:
+      type: integer
+      description: "Number of days to analyze (30-365)"
+      default: 180
+      minimum: 30
+      maximum: 365
+    include_correlation:
+      type: boolean
+      description: "Include statistical correlation coefficient"
+      default: true
+    format:
+      type: string
+      description: "Response format preference"
+      default: "base64"
+      enum: ["base64", "url"]
+  
+  # Expected outputs for automation workflows
+  outputs:
+    success:
+      type: boolean
+      description: "Analysis completion status"
+    correlation_coefficient:
+      type: number
+      description: "Statistical correlation between Bitcoin and energy"
+    summary:
+      type: string
+      description: "Human-readable analysis summary"
+    insights:
+      type: array
+      description: "AI-generated insights and observations"
+    image_base64:
+      type: string
+      description: "Base64 encoded chart visualization"
+    bitcoin_price_range:
+      type: object
+      description: "Min/max Bitcoin prices in analyzed period"
+    energy_usage_range:
+      type: object
+      description: "Min/max energy usage in analyzed period"
+  
+  # Business use cases for watsonx Orchestrate
+  use_cases:
+    - name: "Financial Market Analysis"
+      description: "Automated Bitcoin trend analysis with energy correlation"
+      workflow_type: "scheduled_report"
+      
+    - name: "Energy Infrastructure Planning"
+      description: "Forecast energy demand based on crypto market activity"
+      workflow_type: "predictive_analytics"
+      
+    - name: "Risk Assessment"
+      description: "Evaluate cryptocurrency market risks using energy data"
+      workflow_type: "risk_management"
+      
+    - name: "Regulatory Reporting"
+      description: "Generate compliance reports for energy-intensive assets"
+      workflow_type: "compliance_automation"
+  
+  # Integration settings
+  integration:
+    rate_limit: "100/minute"
+    timeout: "30s"
+    retry_attempts: 3
+    health_check: "/health"
+    
+    # Authentication (configure as needed)
+    auth:
+      type: "none"  # Change to "api_key" or "oauth" if needed
+      
+    # Error handling
+    error_handling:
+      fallback_enabled: true
+      fallback_message: "Using cached/synthetic data due to API unavailability"
+      
+  # Skill capabilities for watsonx Orchestrate UI
+  capabilities:
+    - "Real-time data analysis"
+    - "Statistical correlation calculation"
+    - "Visual chart generation"
+    - "AI-powered insights"
+    - "Automated reporting"
+    - "Business intelligence"
+    
+  # Sample automation workflow
+  sample_workflow:
+    name: "Daily Bitcoin Energy Report"
+    description: "Generate daily correlation analysis for executive dashboard"
+    trigger: "schedule:daily:09:00"
+    steps:
+      - action: "analyze-bitcoin-energy"
+        parameters:
+          days: 30
+          include_correlation: true
+        outputs: ["summary", "correlation_coefficient", "insights"]
+      - action: "send_email"
+        inputs: 
+          subject: "Daily Bitcoin Energy Correlation Report"
+          body: "{{summary}} Key insights: {{insights}}"
+          recipients: ["executives@company.com"] 
